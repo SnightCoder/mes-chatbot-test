@@ -34,7 +34,7 @@ app.post("/webhook",function(req,res){
 });
 
 function sendText(id, message){
-	
+	if(message!=null){
 	if(message.toUpperCase() == "I LOVE YOU"){
 		message = "I love you too Nii-san <3";
 	}
@@ -53,4 +53,5 @@ function sendText(id, message){
 			message:{text:message}
 		}
 	});
+	}
 }
