@@ -6,8 +6,10 @@ var at="EAAHXcBkyGtMBADb9pJHuRlIRMyN348J3JgfHJZB1q5aqZAVJWjg8v0yWwzNmZCONoGax7ac
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
-app.listen(3000);
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
 console.log("Listening...");
+
 app.get("/webhook",function(req,res){
 	//res.send("<button>Hi</button>");
 	console.log("get!");
