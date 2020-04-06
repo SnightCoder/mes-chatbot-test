@@ -2,7 +2,7 @@ var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
 var app = express();
-var at="{PTOKEN}";
+var at="{PAGE_ACCESS_TOKEN}";
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -60,7 +60,7 @@ let
 	hoa_mp = 254591;
 
 function giveText(id, message){
-
+	
 	if(message!=null){
 	if(message.toUpperCase() == "I LOVE YOU"){
 		message = "I love you too Nii-san <3";
@@ -72,12 +72,12 @@ function giveText(id, message){
 		message = "Nii-san's recipient ID: "+id;	
 	}
 	else if(message.toUpperCase() =="HELP"){
-		message = "Try sending \"ncov info\", Nii-san";
+		message = "Try sending \"ncovid info\", Nii-san";
 	}
-	else if(message.toUpperCase() == "NCOV LINK"){
+	else if(message.toUpperCase() == "NCOVID LINK"){
 		message	= "Here Nii-san:\nhttps://ncov.moh.gov.vn/\nhttps://google.com/covid19-map/?hl=en\nhttps://www.worldometers.info/coronavirus/";
 	}
-	else if(message.toUpperCase() == "NCOV INFO"){
+	else if(message.toUpperCase() == "NCOVID INFO"){
 		cov=0;
 		getcovidToday(id,"world");
 		return;
@@ -158,9 +158,21 @@ function giveText(id, message){
 			sendText(id,hoa_m);
 	}
 	//#endregion mon hoc
+	else{
+
+	var imes = message.split(" ");
+	if (imes[0].toUpperCase() == "NCOVID"){
+		cov=0;
+		var cname=message.substr(7);
+		getcovid(id,cname);
+		return;
+	}
 	else
+
 	message = "Hello Nii-san ◍•ᴗ•◍";
-	}else{
+	}
+	}
+	else{
 	message = "wdym, Nii-san?!";
 	}
 
@@ -201,7 +213,7 @@ request({
 		let todayCases = data.todayCases;
 		let percentDeath= ((Number(deaths)/Number(confirmedCases))*100).toLocaleString("en", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "%";	
 
-		sendText(id,country+ "\nCases (Số ca nhiễm ): "+confirmedCases+" ( + "+todayCases+" )"+"\nRecovered (Bình phục): "+recovered+"\nDeaths (Tử vong): "+deaths+"\n% of Deaths: "+percentDeath)
+		sendText(id,country+ "\nCases: "+confirmedCases+" ( + "+todayCases+" )"+"\nRecovered: "+recovered+"\nDeaths: "+deaths+"\n% of Deaths: "+percentDeath)
 		}
 		console.log("cov: "+cov);
     }
