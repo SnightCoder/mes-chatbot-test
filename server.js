@@ -72,12 +72,12 @@ function giveText(id, message){
 		message = "Nii-san's recipient ID: "+id;	
 	}
 	else if(message.toUpperCase() =="HELP"){
-		message = "Try sending \"ncovid info\", Nii-san";
+		message = "Try sending \"ncov info\", Nii-san";
 	}
-	else if(message.toUpperCase() == "NCOVID LINK"){
-		message	= "Here Nii-san:\nhttps://ncov.moh.gov.vn/\nhttps://google.com/covid19-map/?hl=en\nhttps://www.worldometers.info/coronavirus/";
+	else if(message.toUpperCase() == "NCOV LINK"){
+		message	= "Here Nii-san:\nhttps://corona.kompa.ai/\nhttps://ncov.moh.gov.vn/\nhttps://google.com/covid19-map/?hl=en\nhttps://www.worldometers.info/coronavirus/";
 	}
-	else if(message.toUpperCase() == "NCOVID INFO"){
+	else if(message.toUpperCase() == "NCOV INFO"){
 		cov=0;
 		getcovidToday(id,"world");
 		return;
@@ -94,28 +94,7 @@ function giveText(id, message){
 	else if(message.toUpperCase() == "THANKS"){
 		message = "Glad to help! Nii-san";
 	}
-	//region 
-	else if(message.toUpperCase() == "NCOV VIETNAM"){
-		cov=0;
-		getcovid(id,"vietnam");
-		return;
-	}
-	else if(message.toUpperCase() == "NCOV NEW ZEALAND"){
-		cov=0;
-		getcovid(id,"New Zealand");
-		return;
-	}
-	else if(message.toUpperCase() == "NCOV WORLD"){
-		cov=0;
-		getcovid(id,"world");
-		return;
-	}
-	else if(message.toUpperCase() == "NCOV CHINA"){
-		cov=0;
-		getcovid(id,"China");
-		return;
-	}
-	//endregion
+
 	//#region monhoc
 	else if(message.toUpperCase()=="VAN"){
 			message=van_mp;
@@ -161,9 +140,9 @@ function giveText(id, message){
 	else{
 
 	var imes = message.split(" ");
-	if (imes[0].toUpperCase() == "NCOVID"){
+	if (imes[0].toUpperCase() == "NCOV"){
 		cov=0;
-		var cname=message.substr(7);
+		var cname=message.substr(5);
 		getcovid(id,cname);
 		return;
 	}
