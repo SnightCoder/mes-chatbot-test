@@ -79,7 +79,7 @@ function giveText(id, message){
 		message = "Try sending \"ncov info\", Nii-san";
 	}
 	else if(message.toUpperCase() == "NCOV LINK"){
-		message	= "Here Nii-san:\nhttps://corona.kompa.ai/\nhttps://ncov.moh.gov.vn/\nhttps://google.com/covid19-map/?hl=en\nhttps://www.worldometers.info/coronavirus/";
+		message	= "Here Nii-san:\nhttps://corona.kompa.ai/\nhttps://ncov.moh.gov.vn/\nhttps://google.com/covid19-map/?hl=en\nhttps://www.worldometers.info/coronavirus/\nhttps://documenter.getpostman.com/view/8854915/SzS7R6uu?version=latest";
 	}
 	else if(message.toUpperCase() == "NCOV INFO"){
 		cov=0;
@@ -154,8 +154,10 @@ function giveText(id, message){
 	var imes = message.split(" ");
 	if (imes[0].toUpperCase() == "NCOV"){
 		cov=0;
+		//sorting in development...
 		var cname=message.substr(5);
 		getcovid(id,cname);
+
 		return;
 	}
 	else
@@ -202,6 +204,7 @@ request({
 		let deaths = data.deaths;
 		let recovered = data.recovered;
 		let country = data.country;
+		if(countryName.toUpperCase()=="WORLD")country="World";
 		let todayCases = data.todayCases;
 		let percentDeath= ((Number(deaths)/Number(confirmedCases))*100).toLocaleString("en", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "%";	
 
