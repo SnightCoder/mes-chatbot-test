@@ -2,7 +2,7 @@ var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
 var app = express();
-var at="YOUR_PAGE_ACCESS_TOKEN";
+var at="EAAHXcBkyGtMBAACUXjEyMORkRi18U049fCgDwRkeMwTfcdUBc89qwpO7mSMoGUEybtrkMpbBqWtzmZBffGb0ZAGq4OiuhZAS3vtAi90Ps7t5IE8ies719GTKt6wKp6yJOOcX0q7aDORURbJhIZCFO26TDpN1BkqA1MG57jcmu6KyKXnrlfCfN2Hn54g7AG0ZD";
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -187,6 +187,7 @@ let cov=1;
 function getcovid(id,countryName){
 	// var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations/228"
 	var url = "https://corona.lmao.ninja/v2/countries/"+countryName;
+	if(countryName.toUpperCase()=="WORLD") url = "https://corona.lmao.ninja/v2/all";
 
 request({
     url: url,
@@ -215,6 +216,7 @@ request({
 function getcovidToday(id,countryName){
 	// var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations/228"
 	var url = "https://corona.lmao.ninja/v2/countries/"+countryName;
+	url = "https://corona.lmao.ninja/v2/all";
 
 request({
     url: url,
