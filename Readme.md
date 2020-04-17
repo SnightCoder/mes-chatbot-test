@@ -1,7 +1,7 @@
 # Facebook Messenger chatbot nodeJS
 <br>
 
-# init:
+init:
 <br>
 `npm init`<br>
 `npm install --save express`<br>
