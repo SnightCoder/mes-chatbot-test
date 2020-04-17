@@ -2,7 +2,7 @@ var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
 var app = express();
-var at="{PAGE_ACCESS_TOKEN}";
+var at="YOUR_PAGE_ACCESS_TOKEN";
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -41,12 +41,14 @@ let
 	anh_m = 7226394309,
 	toan_m = 4884624999,
 	sinh_m = 6275460345,
-	tin_m = 6491888812,
+	tin_m = 6575955534,//6491888812
 	gdcd_m = 8311211345,
 	su_m = 9012849742,
-	dia_m = 8613256129,
+	dia_m = 3695849203,//8613256129
 	ly_m = 7713790828,
 	hoa_m = 6179532374,
+	gdqp_m = 5378445871,
+	td_m = 7827114599,
 
 	van_mp = 221180,
 	anh_mp=266760,
@@ -55,9 +57,11 @@ let
 	tin_mp = 123456,
 	gdcd_mp = 123456,
 	su_mp = 770711,
-	dia_mp = 221461,
+	dia_mp = "hoangnuvb",//221461
 	ly_mp = 878098,
-	hoa_mp = 254591;
+	hoa_mp = 254591,
+	gdqp_mp = 123456,
+	td_mp = 123456;
 
 function giveText(id, message){
 	
@@ -136,6 +140,14 @@ function giveText(id, message){
 			message=hoa_mp;
 			sendText(id,hoa_m);
 	}
+	else if(message.toUpperCase()=="TD"){
+			message=td_mp;
+			sendText(id,td_m);
+	}
+	else if(message.toUpperCase()=="GDQP"){
+			message=gdqp_mp;
+			sendText(id,gdqp_m);
+	}
 	//#endregion mon hoc
 	else{
 
@@ -174,7 +186,7 @@ function sendText(id,message)
 let cov=1;
 function getcovid(id,countryName){
 	// var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations/228"
-	var url = "https://corona.lmao.ninja/countries/"+countryName;
+	var url = "https://corona.lmao.ninja/v2/countries/"+countryName;
 
 request({
     url: url,
@@ -192,7 +204,7 @@ request({
 		let todayCases = data.todayCases;
 		let percentDeath= ((Number(deaths)/Number(confirmedCases))*100).toLocaleString("en", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "%";	
 
-		sendText(id,country+ "\nCases: "+confirmedCases+" ( + "+todayCases+" )"+"\nRecovered: "+recovered+"\nDeaths: "+deaths+"\n% of Deaths: "+percentDeath)
+		sendText(id,country+ "\n🤧 Cases: "+confirmedCases+" ( + "+todayCases+" )"+"\n👌 Recovered: "+recovered+"\n💀 Deaths: "+deaths+"\n% of Deaths: "+percentDeath)
 		}
 		console.log("cov: "+cov);
     }
@@ -202,7 +214,7 @@ request({
 
 function getcovidToday(id,countryName){
 	// var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations/228"
-	var url = "https://corona.lmao.ninja/countries/"+countryName;
+	var url = "https://corona.lmao.ninja/v2/countries/"+countryName;
 
 request({
     url: url,
