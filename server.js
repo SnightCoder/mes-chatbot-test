@@ -1,8 +1,21 @@
 var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
+// var time = require('time');
+
 var app = express();
-var at="EAAHXcBkyGtMBAACUXjEyMORkRi18U049fCgDwRkeMwTfcdUBc89qwpO7mSMoGUEybtrkMpbBqWtzmZBffGb0ZAGq4OiuhZAS3vtAi90Ps7t5IE8ies719GTKt6wKp6yJOOcX0q7aDORURbJhIZCFO26TDpN1BkqA1MG57jcmu6KyKXnrlfCfN2Hn54g7AG0ZD";
+
+var at="{ACCESS_TOKEN}";
+var testerRecipient="{ID}";
+
+//image:
+var image1="https://i.imgur.com/Kg4l9hp.png",attachment_i1=556114605320871;
+var image2="https://i.imgur.com/4teozvl.jpg",attachment_i2=251638932610800;
+var image3="https://i.imgur.com/Gl1eRhP.jpg",attachment_i3=1547730032081750;
+var image4="https://i.imgur.com/IkQZ835.jpg",attachment_i4=2948552578704626;
+var image5="https://i.imgur.com/3awnzQ8.png",attachment_i5=685843405307164;//night1
+var image6="https://i.imgur.com/htzI1jz.png",attachment_i6=292194478475236;//night2
+var image7="https://i.imgur.com/YTnSfBh.gif",attachment_i7=1243944389330480;//LOVE
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -10,7 +23,59 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
 console.log("Listening...");
 
+function checkTime(arg) {
+	let date_ob = new Date();
+	// 	console.log(date_ob.getTimezoneOffset());
+	//    // date_ob.setTimezone("America/Los_Angeles");
+	//    // current date
+	//    // adjust 0 before single digit date
+	   let date = ("0" + date_ob.getDate()).slice(-2);
+	
+	//    // current month
+	   let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+	
+	//    // current year
+	   let year = date_ob.getFullYear();
+	
+	//    // current hours
+	   let hours = date_ob.getHours();
+	
+	//    // current minutes
+	   let minutes = date_ob.getMinutes();
+	
+	//    // current seconds
+	   let seconds = date_ob.getSeconds();
 
+	   if(seconds==0)
+	   if(minutes==0)
+		   if(hours==21){
+			   sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
+			   sendByAttachmentID(testerRecipient,attachment_i6);
+			   sendByAttachmentID(testerRecipient,attachment_i5);
+		   }
+		
+			   if(seconds==0)
+			   if(minutes==0)
+				   if(hours==6){
+					   sendText(testerRecipient,"Good morning, Nii-san. I feel you will have a nince day today!");
+					   sendByAttachmentID(testerRecipient,attachment_i2);
+				   }
+
+					   if(seconds==0)
+					   if(minutes==45)
+						   if(hours==11){
+							   sendText(testerRecipient,"Okaeri, Nii-san");
+							   sendByAttachmentID(testerRecipient,attachment_i1);
+						   }
+
+	console.log(getTimeNow());
+}
+  
+setInterval(checkTime, 1000,"test para");
+// setTimeout(myFunc, 1500, 'funky');
+// clearTimeout(timeoutObj);
+// clearImmediate(immediateObj);
+// clearInterval(intervalObj);
 
 app.get("/webhook",function(req,res){
 	//res.send("<button>Hi</button>");
@@ -41,8 +106,8 @@ let
 	anh_m = 7226394309,
 	toan_m = 4884624999,
 	sinh_m = 6275460345,
-	tin_m = 6575955534,//6491888812
-	gdcd_m = 8311211345,
+	tin_m = 8632900528 ,//6491888812, 6575955534
+	gdcd_m = 8221191641,//8311211345
 	su_m = 9012849742,
 	dia_m = 3695849203,//8613256129
 	ly_m = 7713790828,
@@ -54,7 +119,7 @@ let
 	anh_mp=266760,
 	toan_mp = "phammy",
 	sinh_mp = 335696,
-	tin_mp = 123456,
+	tin_mp = "tinvb2020", //123456
 	gdcd_mp = 123456,
 	su_mp = 770711,
 	dia_mp = "hoangnuvb",//221461
@@ -64,13 +129,46 @@ let
 	td_mp = 123456;
 
 function giveText(id, message){
-	
+	var imageurl="";
+	var atID="";
+	var imageSend=false;
 	if(message!=null){
 	if(message.toUpperCase() == "I LOVE YOU"){
 		message = "I love you too Nii-san <3";
 	}
+	else if(message.toUpperCase() == "HAVE A NICE DAY"){
+		message = "Thanks, you too! Nii-san";
+		imageSend=true;
+		imageurl=image1;
+		atID=attachment_i1;
+	}
+	else if(message.toUpperCase() == "ECCHI"){
+		message = "You're a pervert, aren't you?";
+		imageSend=true;
+		imageurl=image4;	
+		atID=attachment_i4;
+	}
+	else if(message.toUpperCase() == "SHOW"){
+		message = "Showing all images";
+		sendByAttachmentID(id,attachment_i1);
+		sendByAttachmentID(id,attachment_i2);
+		sendByAttachmentID(id,attachment_i3);
+		sendByAttachmentID(id,attachment_i4);
+		sendByAttachmentID(id,attachment_i5);
+		sendByAttachmentID(id,attachment_i6);
+		sendByAttachmentID(id,attachment_i7);
+	}
+	else if(message.toUpperCase() == "TIME"){
+		message = getTimeNow();
+	}
 	else if(message.toUpperCase() == "I LIKE YOU"){
 		message = "I love you Nii-san";
+	}
+	else if(message.toUpperCase() == "LOVE"){
+		message = "≧ ︿ ≦";
+		imageSend=true;
+		imageurl=image7;	
+		atID=attachment_i7;
 	}
 	else if(message.toUpperCase() == "MY ID"){
 		message = "Nii-san's recipient ID: "+id;	
@@ -161,8 +259,12 @@ function giveText(id, message){
 		return;
 	}
 	else
-
-	message = "Hello Nii-san ◍•ᴗ•◍";
+	{
+		message = "Hello Nii-san ◍•ᴗ•◍";
+		imageSend=true;
+		imageurl=image3;
+		atID=attachment_i3;
+	}
 	}
 	}
 	else{
@@ -170,6 +272,10 @@ function giveText(id, message){
 	}
 
 	sendText(id,message);
+	if(imageSend){
+		// sendImage(id,imageurl);
+		sendByAttachmentID(id,atID);
+	}
 }
 
 function sendText(id,message)
@@ -184,6 +290,53 @@ function sendText(id,message)
 		}
 	});
 }
+
+function sendImage(id,url)
+{
+	request({
+		url:"https://graph.facebook.com/v6.0/me/messages",
+		qs: {access_token:at	},
+		method:"POST",
+		json: {
+			recipient:{id:id},
+			message:{
+
+				attachment:{
+					type:"image", 
+					payload:{
+					  is_reusable: true,
+					  url:url
+					}
+				  }
+
+			}
+		}
+	});
+}
+
+function sendByAttachmentID(id,attachment_id)
+{
+	request({
+		url:"https://graph.facebook.com/v6.0/me/messages",
+		qs: {access_token:at	},
+		method:"POST",
+		json: {
+			recipient:{id:id},
+			message:{
+
+				attachment:{
+					type:"image", 
+					payload:{
+						attachment_id: attachment_id
+					}
+				  }
+
+			}
+		}
+	});
+}
+
+
 
 let cov=1;
 function getcovid(id,countryName){
@@ -243,4 +396,39 @@ request({
     }
 
 })
+}
+
+function getTimeNow(){
+	let date_ob = new Date();
+// 	console.log(date_ob.getTimezoneOffset());
+//    // date_ob.setTimezone("America/Los_Angeles");
+//    // current date
+//    // adjust 0 before single digit date
+   let date = ("0" + date_ob.getDate()).slice(-2);
+
+//    // current month
+   let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+//    // current year
+   let year = date_ob.getFullYear();
+
+//    // current hours
+   let hours = date_ob.getHours();
+
+//    // current minutes
+   let minutes = date_ob.getMinutes();
+
+//    // current seconds
+   let seconds = date_ob.getSeconds();
+
+//    // prints date in YYYY-MM-DD format
+//    console.log(year + "-" + month + "-" + date);
+
+//    // prints date & time in YYYY-MM-DD HH:MM:SS format
+//    console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
+
+//    // prints time in HH:MM format
+//    console.log(hours + ":" + minutes);
+//    // console.log(`arg was => ${arg}`);
+   return year + "-" + month + "-" + date + "\n" + hours + ":" + minutes + ":" + seconds;
 }
