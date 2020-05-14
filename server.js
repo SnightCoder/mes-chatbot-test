@@ -1,11 +1,13 @@
 var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
+var http = require('http');
+
 // var time = require('time');
 
 var app = express();
 
-var at="{ACCESS_TOKEN}";
+var at="{ACCESS_TK}";
 var testerRecipient="{ID}";
 
 //image:
@@ -49,7 +51,7 @@ function checkTime(arg) {
 	   if(seconds==0)
 	   if(minutes==0)
 		   if(hours==21){
-			   sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
+			   sendText(testerRecipient,"It's 21:00!!! Good night, Nii-san");
 			   sendByAttachmentID(testerRecipient,attachment_i6);
 			   sendByAttachmentID(testerRecipient,attachment_i5);
 		   }
@@ -141,6 +143,18 @@ function giveText(id, message){
 		imageSend=true;
 		imageurl=image1;
 		atID=attachment_i1;
+	}
+	else if(message.toUpperCase() == "I'M GOING TO SLEEP NOW"){
+		sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
+		sendByAttachmentID(testerRecipient,attachment_i6);
+		sendByAttachmentID(testerRecipient,attachment_i5);
+		return;
+	}
+	else if(message.toUpperCase() == "I'M GOING TO SLEEP"){
+		sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
+		sendByAttachmentID(testerRecipient,attachment_i6);
+		sendByAttachmentID(testerRecipient,attachment_i5);
+		return;
 	}
 	else if(message.toUpperCase() == "ECCHI"){
 		message = "You're a pervert, aren't you?";
@@ -257,6 +271,19 @@ function giveText(id, message){
 		getcovid(id,cname);
 
 		return;
+	}
+	else if (imes[0].toUpperCase() == "TRANSLATE"){
+		if(imes[1].toUpperCase() == "FROM"){
+			var check=imes[0]+" "+imes[1]+" "+imes[2]+" "+imes[3]+" "+imes[4];
+			var texttrans=message.substr(check.length+1)
+			translate(id,texttrans,imes[2],imes[4]);
+			return;
+		}
+		else{
+		var texttrans=message.substr(10);
+		translate(id,texttrans,"en","ja");
+		return;
+		}
 	}
 	else
 	{
@@ -431,4 +458,45 @@ function getTimeNow(){
 //    console.log(hours + ":" + minutes);
 //    // console.log(`arg was => ${arg}`);
    return year + "-" + month + "-" + date + "\n" + hours + ":" + minutes + ":" + seconds;
+}
+
+function translate(id,text,fromLang,toLang){
+    var clientId = "FREE_TRIAL_ACCOUNT";
+    var clientSecret = "PUBLIC_SECRET";
+        // var fromLang = "en";
+        // var toLang = "vi";
+        // var text = "Let's have some fun!";
+
+        var jsonPayload = JSON.stringify({
+            fromLang: fromLang,
+            toLang: toLang,
+            text: text
+        });
+
+        var options = {
+            hostname: "api.whatsmate.net",
+            port: 80,
+            path: "/v1/translation/translate",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-WM-CLIENT-ID": clientId,
+                "X-WM-CLIENT-SECRET": clientSecret,
+                "Content-Length": Buffer.byteLength(jsonPayload)
+            }
+        };
+
+        var request = new http.ClientRequest(options);
+        request.end(jsonPayload);
+
+        request.on('response', function (response) {
+            console.log('Status code: ' + response.statusCode);
+            response.setEncoding('utf8');
+            response.on('data', function (chunk) {
+                console.log('Translated text:');
+				console.log(chunk);
+				sendText(id,chunk);
+                //send()
+            });
+        });
 }
