@@ -2,13 +2,14 @@ var express=require("express");
 var request=require("request");
 var bodyparser=require("body-parser");
 var http = require('http');
+var cheerio = require('cheerio');
 
 // var time = require('time');
 
 var app = express();
 
-var at="{ACCESS_TK}";
-var testerRecipient="{ID}";
+var at="{ACCESS_TOK}";
+var testerRecipient="id";
 
 //image:
 var image1="https://i.imgur.com/Kg4l9hp.png",attachment_i1=556114605320871;
@@ -56,11 +57,18 @@ function checkTime(arg) {
 			   sendByAttachmentID(testerRecipient,attachment_i5);
 		   }
 		
+		   if(seconds==0)
+		   if(minutes==0)
+			   if(hours==6){
+				   sendText(testerRecipient,"Good morning, Nii-san. I feel you will have a nice day today!");
+				   sendByAttachmentID(testerRecipient,attachment_i2);
+			   }
+
 			   if(seconds==0)
 			   if(minutes==0)
-				   if(hours==6){
-					   sendText(testerRecipient,"Good morning, Nii-san. I feel you will have a nince day today!");
-					   sendByAttachmentID(testerRecipient,attachment_i2);
+				   if(hours==7){
+					   sendText(testerRecipient,"japanese word of the day:");
+				       getRandomJapaneseWord(testerRecipient);
 				   }
 
 					   if(seconds==0)
@@ -138,22 +146,36 @@ function giveText(id, message){
 	if(message.toUpperCase() == "I LOVE YOU"){
 		message = "I love you too Nii-san <3";
 	}
+	if(message.toUpperCase() == "GOOD MORNING"||message.toUpperCase() =="OHAYO"){
+		sendText(id,"Good morning, Nii-san. I feel you will have a nice day today!");
+		sendByAttachmentID(id,attachment_i2);
+		return;
+	}
+	if(message.toUpperCase() == "TADAIMA"||message.toUpperCase() =="I'M HOME"){
+		sendText(id,"Okaeri, Nii-san");
+		sendByAttachmentID(id,attachment_i1);
+		return;
+	}
 	else if(message.toUpperCase() == "HAVE A NICE DAY"){
 		message = "Thanks, you too! Nii-san";
 		imageSend=true;
 		imageurl=image1;
 		atID=attachment_i1;
 	}
+	else if(message.toUpperCase() == "VOCABULARY"){
+		message = "Here is some japanese vocabulary:";
+		getRandomJapaneseWord(id);
+	}
 	else if(message.toUpperCase() == "I'M GOING TO SLEEP NOW"){
-		sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
-		sendByAttachmentID(testerRecipient,attachment_i6);
-		sendByAttachmentID(testerRecipient,attachment_i5);
+		sendText(id,"Oyaa~ Let's have a nice sleep, Nii-san");
+		sendByAttachmentID(id,attachment_i6);
+		sendByAttachmentID(id,attachment_i5);
 		return;
 	}
 	else if(message.toUpperCase() == "I'M GOING TO SLEEP"){
-		sendText(testerRecipient,"Oyaa~ Let's have a nice sleep, Nii-san");
-		sendByAttachmentID(testerRecipient,attachment_i6);
-		sendByAttachmentID(testerRecipient,attachment_i5);
+		sendText(id,"Oyaa~ Let's have a nice sleep, Nii-san");
+		sendByAttachmentID(id,attachment_i6);
+		sendByAttachmentID(id,attachment_i5);
 		return;
 	}
 	else if(message.toUpperCase() == "ECCHI"){
@@ -499,4 +521,28 @@ function translate(id,text,fromLang,toLang){
                 //send()
             });
         });
+}
+
+function getRandomJapaneseWord(id){
+    var items="";
+    request('https://www.bestrandoms.com/random-japanese-words', (error, response, html) => {
+      if (!error && response.statusCode == 200) {
+        const $ = cheerio.load(html);
+        var i=0;
+        $('.list-unstyled li').each((i,el) => {
+        if(i<6){
+        var item=$(el).text();
+        item=item.trim();
+        item=item.replace(/\s/g, ' ');
+        items+=item+"\n";
+        }
+        i++;
+        });
+       
+        console.log(items);
+        console.log('Scraping Done...');
+		//send
+		sendText(id,items);
+      }
+    });
 }
