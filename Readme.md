@@ -16,6 +16,7 @@ run heroku file or heroku.bat
 
 # showcase:
 ![hello](Photos/1.jpg | width=100)<br>
+<img src="Photos/1.jpg" width="200" height="400" />
 ![hi](Photos/2.jpg | width=100)<br>
 Translate text via Yandex Translate feat <a href="https://www.npmjs.com/package/yandex-translate">yandex-translate</a>
 ![hello](Photos/3.jpg | width=100)<br>
