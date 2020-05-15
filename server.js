@@ -1,15 +1,7 @@
-var express=require("express");
-var request=require("request");
-var bodyparser=require("body-parser");
-var http = require('http');
-var cheerio = require('cheerio');
-
-// var time = require('time');
-
-var app = express();
-
-var at="{ACCESS_TOK}";
-var testerRecipient="id";
+var at="{PAGE_ACCESS_TOKEN}";
+var verify_token="{hub.verify_token}";
+var testerRecipient="{RecipientID}";//facebook page owner(optional)
+var yandex_key ="{yandex_key_api}";//yandex translator
 
 //image:
 var image1="https://i.imgur.com/Kg4l9hp.png",attachment_i1=556114605320871;
@@ -19,6 +11,18 @@ var image4="https://i.imgur.com/IkQZ835.jpg",attachment_i4=2948552578704626;
 var image5="https://i.imgur.com/3awnzQ8.png",attachment_i5=685843405307164;//night1
 var image6="https://i.imgur.com/htzI1jz.png",attachment_i6=292194478475236;//night2
 var image7="https://i.imgur.com/YTnSfBh.gif",attachment_i7=1243944389330480;//LOVE
+
+
+//require:
+var express=require("express");
+var request=require("request");
+var bodyparser=require("body-parser");
+var http = require('http');
+var cheerio = require('cheerio');
+var translate = require('yandex-translate')(yandex_key);
+// var time = require('time');
+
+var app = express();
 
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -67,8 +71,8 @@ function checkTime(arg) {
 			   if(seconds==0)
 			   if(minutes==0)
 				   if(hours==7){
-					   sendText(testerRecipient,"japanese word of the day:");
-				       getRandomJapaneseWord(testerRecipient);
+						sendText(testerRecipient,"Japanese sentence of the day:\nhttps://www.transparent.com/word-of-the-day/today/japanese.html");
+						getRandomJapaneseWord(testerRecipient,false);
 				   }
 
 					   if(seconds==0)
@@ -90,7 +94,7 @@ setInterval(checkTime, 1000,"test para");
 app.get("/webhook",function(req,res){
 	//res.send("<button>Hi</button>");
 	console.log("get!"+cov);
-	if(req.query["hub.verify_token"]=="try"){
+	if(req.query["hub.verify_token"]==verify_token){
 		//res.send(req.query["hub.challenge"]);	
 		res.status(200).send(req.query["hub.challenge"]);
 	}
@@ -163,8 +167,8 @@ function giveText(id, message){
 		atID=attachment_i1;
 	}
 	else if(message.toUpperCase() == "VOCABULARY"){
-		message = "Here is some japanese vocabulary:";
-		getRandomJapaneseWord(id);
+		message = "Here is some Japanese vocabulary:";
+		getRandomJapaneseWord(id,true);
 	}
 	else if(message.toUpperCase() == "I'M GOING TO SLEEP NOW"){
 		sendText(id,"Oyaa~ Let's have a nice sleep, Nii-san");
@@ -298,12 +302,12 @@ function giveText(id, message){
 		if(imes[1].toUpperCase() == "FROM"){
 			var check=imes[0]+" "+imes[1]+" "+imes[2]+" "+imes[3]+" "+imes[4];
 			var texttrans=message.substr(check.length+1)
-			translate(id,texttrans,imes[2],imes[4]);
+			translateYandex(id,texttrans,imes[2],imes[4]);
 			return;
 		}
 		else{
 		var texttrans=message.substr(10);
-		translate(id,texttrans,"en","ja");
+		translateYandex(id,texttrans,"en","ja");
 		return;
 		}
 	}
@@ -482,7 +486,7 @@ function getTimeNow(){
    return year + "-" + month + "-" + date + "\n" + hours + ":" + minutes + ":" + seconds;
 }
 
-function translate(id,text,fromLang,toLang){
+function translateOld1(id,text,fromLang,toLang){
     var clientId = "FREE_TRIAL_ACCOUNT";
     var clientSecret = "PUBLIC_SECRET";
         // var fromLang = "en";
@@ -523,7 +527,7 @@ function translate(id,text,fromLang,toLang){
         });
 }
 
-function getRandomJapaneseWord(id){
+function getRandomJapaneseWord(id,send){
     var items="";
     request('https://www.bestrandoms.com/random-japanese-words', (error, response, html) => {
       if (!error && response.statusCode == 200) {
@@ -542,7 +546,22 @@ function getRandomJapaneseWord(id){
         console.log(items);
         console.log('Scraping Done...');
 		//send
+		if(send)
 		sendText(id,items);
+		else sendText(id,"Japanese word of the day:\n"+items);
       }
     });
 }
+
+function translateYandex(id,text,from,to){
+	translate.translate(text, { from:from, to: to }, function(err, res) {
+		var s=res.text;
+		s+="";
+		console.log(s);
+		//send
+		sendText(id,s);
+		if(s=="undefined")
+		sendText(id,"https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#api-overview__languages");
+	});
+}
+ 
