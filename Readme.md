@@ -22,8 +22,6 @@
 
 ```
 
-Extract the node_modules.rar<br>
-
 # heroku deployment:<br>
 run heroku file or heroku.bat
 
