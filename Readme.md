@@ -15,10 +15,9 @@ Extract the node_modules.rar<br>
 run heroku file or heroku.bat
 
 # showcase:
-![hello](Photos/1.jpg | width=100)<br>
-<img src="Photos/1.jpg" width="200" height="400" />
-![hi](Photos/2.jpg | width=100)<br>
+<img src="Photos/1.jpg" width="300" height="400" />
+<img src="Photos/2.jpg" width="300" height="400" />
 Translate text via Yandex Translate feat <a href="https://www.npmjs.com/package/yandex-translate">yandex-translate</a>
-![hello](Photos/3.jpg | width=100)<br>
+<img src="Photos/3.jpg" width="300" height="400" />
 Daily Japanese Vocabulary vie <a href="https://www.bestrandoms.com/random-japanese-words<br>">bestrandoms</a> 
-![hi](Photos/4.jpg | width=100)<br>
+<img src="Photos/4.jpg" width="300" height="400" />
