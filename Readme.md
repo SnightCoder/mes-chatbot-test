@@ -25,6 +25,7 @@
 # heroku deployment:<br>
 run heroku file or heroku.bat <br>
 keep heroku app awake <a href="https://pingability.com/">pingability</a> <br>
+<a href="https://www.statuscake.com">StatusCake</a> <br>
 
 # showcase:
 <br><img src="Photos/1.jpg" width="300" height="600" /><br>
