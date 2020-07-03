@@ -26,6 +26,7 @@
 run heroku file or heroku.bat <br>
 keep heroku app awake <a href="https://pingability.com/">pingability</a> <br>
 <a href="https://www.statuscake.com">StatusCake</a> <br>
+set timezone on heroku: <pre>heroku config:add TZ="Asia/Ho_Chi_Minh"</pre>
 
 # showcase:
 <br><img src="Photos/1.jpg" width="300" height="600" /><br>
